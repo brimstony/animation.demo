@@ -1,4 +1,4 @@
-package com.brimstony.animation.demo;
+package com.brimstony.animation.demo.basic;
 
 import javax.swing.*;
 import java.awt.*;

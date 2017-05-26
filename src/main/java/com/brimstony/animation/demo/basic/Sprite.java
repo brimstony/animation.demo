@@ -1,8 +1,7 @@
-package com.brimstony.animation.demo;
+package com.brimstony.animation.demo.basic;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
