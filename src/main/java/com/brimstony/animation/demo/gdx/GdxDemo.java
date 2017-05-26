@@ -3,11 +3,15 @@ package com.brimstony.animation.demo.gdx;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.brimstony.animation.demo.gdx.input.KeyboardController;
 
 public class GdxDemo extends ApplicationAdapter {
+
+
     // Constant rows and columns of the sprite sheet
     private static final int FRAME_COLS = 6, FRAME_ROWS = 3;
 
@@ -15,7 +19,7 @@ public class GdxDemo extends ApplicationAdapter {
     Animation<TextureRegion> walkRightAnimation;
     Animation<TextureRegion> walkLeftAnimation;
 
-    TextureRegion[] standing;
+    Sprite[] standing;
     TextureRegion currentStandingTexture;
     Texture guybrushSheet;
     SpriteBatch spriteBatch;
@@ -29,12 +33,12 @@ public class GdxDemo extends ApplicationAdapter {
     float guybrushX = 50;
     float guybrushY = 50;
 
-    private static int STOPPED = 0;
+    public static int STOPPED = 0;
 
-    private static int RIGHT = 1;
-    private static int LEFT = 2;
-    private static int UP = 3;
-    private static int DOWN = 4;
+    public static int RIGHT = 1;
+    public static int LEFT = 2;
+    public static int UP = 3;
+    public static int DOWN = 4;
 
 
     private int currentXDirection = STOPPED;
@@ -68,7 +72,7 @@ public class GdxDemo extends ApplicationAdapter {
         //Have to cheat a little bit... the sprite sheet I'm using isn't perfectly laid out. Need to shave
         //the top row of pixels off so his shoes from the row about don't show.
         //If I had any skill with Paint I would modify the PNG directly :(.
-        standing = new TextureRegion[] {null, new TextureRegion(tmp[2][0], 0, 1, tmp[2][0].getRegionWidth(), tmp[2][0].getRegionHeight() - 1 ), new TextureRegion(tmp[2][1], 0, 1, tmp[2][1].getRegionWidth(), tmp[2][1].getRegionHeight() - 1)};
+        standing = new Sprite[] {null, new Sprite(tmp[2][0], 0, 1, tmp[2][0].getRegionWidth(), tmp[2][0].getRegionHeight() - 1 ), new Sprite(tmp[2][1], 0, 1, tmp[2][1].getRegionWidth(), tmp[2][1].getRegionHeight() - 1)};
 
 
         // Initialize the Animation with the frame interval and array of frames
@@ -86,78 +90,11 @@ public class GdxDemo extends ApplicationAdapter {
     }
 
     private void configureControls() {
-        Gdx.input.setInputProcessor(new InputAdapter() {
-
-            @Override
-            public boolean keyDown(int keycode) {
-                Gdx.app.debug("keyDown", Input.Keys.toString(keycode));
-                switch (keycode) {
-                    case Input.Keys.LEFT:
-                        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-                            return false; //Ingore event and continue
-                        setCurrentXDirection(LEFT);
-                        return true;
-                    case Input.Keys.RIGHT:
-                        if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
-                            return false; //Ingore event and continue
-                        setCurrentXDirection(RIGHT);
-                        return true;
-                    case Input.Keys.UP:
-                        if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
-                            return false; //Ingore event and continue
-                        setCurrentYDirection(UP);
-                        return true;
-                    case Input.Keys.DOWN:
-                        if(Gdx.input.isKeyPressed(Input.Keys.UP))
-                            return false; //Ingore event and continue
-                        setCurrentYDirection(DOWN);
-                        return true;
-                }
-                return false;
-            }
-
-            public boolean keyUp(int keycode) {
-                Gdx.app.debug("keyUp", Input.Keys.toString(keycode));
-
-
-                switch (keycode) {
-                    case Input.Keys.LEFT:
-                        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-                            Gdx.app.debug("keyUp", "Ignoring keyUp, RIGHT is pressed.");
-                            return false;
-                        }
-                        currentXDirection = STOPPED;
-                        return true;
-                    case Input.Keys.RIGHT:
-                        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-                            Gdx.app.debug("keyUp", "Ignoring keyUp, LEFT is pressed.");
-                            return false;
-                        }
-                        currentXDirection = STOPPED;
-                        return true;
-                    case Input.Keys.UP:
-                        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-                            Gdx.app.debug("keyUp", "Ignoring keyUp, DOWN is pressed.");
-                            return false;
-                        }
-                        currentYDirection = STOPPED;
-                        return true;
-                    case Input.Keys.DOWN:
-                        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-                            Gdx.app.debug("keyUp", "Ignoring keyUp, UP is pressed.");
-                            return false;
-                        }
-                        currentYDirection = STOPPED;
-                        return true;
-                }
-                return false;
-            }
-        });
+        Gdx.input.setInputProcessor(new KeyboardController(this));
     }
 
     @Override
     public void render() {
-
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear screen
         stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
@@ -216,14 +153,14 @@ public class GdxDemo extends ApplicationAdapter {
          return null;
     }
 
-    private void setCurrentXDirection(int newDirection){
+    public void setCurrentXDirection(int newDirection){
         if(newDirection != STOPPED) {
             lastXDirection = newDirection;
         }
         currentXDirection = newDirection;
     }
 
-    private void setCurrentYDirection(int newDirection){
+    public void setCurrentYDirection(int newDirection){
         lastYDirection = currentYDirection;
         currentYDirection = newDirection;
     }
