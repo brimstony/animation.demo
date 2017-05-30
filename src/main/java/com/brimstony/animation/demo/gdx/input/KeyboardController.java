@@ -14,7 +14,7 @@ public class KeyboardController extends InputAdapter{
         this.application = application;
     }
 
-
+/*
     @Override
     public boolean keyDown(int keycode) {
         Gdx.app.debug("keyDown", Input.Keys.toString(keycode));
@@ -79,4 +79,5 @@ public class KeyboardController extends InputAdapter{
         }
         return false;
     }
+    */
 }
