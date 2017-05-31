@@ -2,8 +2,8 @@ group 'com.brimstony'
 version '1.0-SNAPSHOT'
 
 
+
 project.ext.gdxVersion = "1.9.6"
-//sourceCompatibility = 1.8gra
 
 buildscript {
 
