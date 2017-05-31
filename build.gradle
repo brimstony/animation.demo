@@ -1,19 +1,51 @@
 group 'com.brimstony'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'groovy'
-apply plugin: 'java'
 
 project.ext.gdxVersion = "1.9.6"
-//sourceCompatibility = 1.8
+//sourceCompatibility = 1.8gra
 
-repositories {
-    mavenCentral()
+buildscript {
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    }
 }
 
-dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.3.11'
-    compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-    compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+
+allprojects {
+    apply plugin: "eclipse"
+    apply plugin: "idea"
+
+    version = "1.0"
+    ext {
+        appName = "animation.demo"
+    }
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    }
+}
+
+project(":core") {
+    apply plugin: "java"
+    apply plugin: 'groovy'
+
+    dependencies {
+        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    }
+}
+
+project(":desktop") {
+    apply plugin: "java"
+
+    dependencies {
+        compile project(":core")
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    }
 }
