@@ -1,4 +1,4 @@
-package com.brimstony.animation.demo.basic;
+package com.brimstony.animation.demo.ignoreme;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

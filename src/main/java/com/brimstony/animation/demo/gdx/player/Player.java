@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.brimstony.animation.demo.gdx.stage.DemoStage;
 
 /**
@@ -23,7 +26,9 @@ public class Player extends Actor{
     Texture spriteSheet;
 
     // A variable for tracking elapsed time for the animation
-    float movementSpeed = 5.0f; // 10 pixels per second.
+    float movementSpeed = 4.0f; // 10 pixels per second.
+
+
 
     private boolean isMoving = false;
     private int currentDirection = LEFT;
@@ -33,6 +38,10 @@ public class Player extends Actor{
 
     public static int RIGHT = 0;
     public static int LEFT = 1;
+
+    private Vector2 destination;
+
+
 
     public Player() {
         // Load the sprite sheet as a Texture
@@ -59,6 +68,7 @@ public class Player extends Actor{
 
         idleTexture = standingSprites[LEFT];
 
+        this.setOrigin(idleTexture.getRegionWidth()/2 , idleTexture.getRegionHeight()/2);
     }
 
     @Override
@@ -75,9 +85,15 @@ public class Player extends Actor{
 
         animationTime = delta;
 
-        Vector2 destination = ((DemoStage)getStage()).lastClicked;
-        Vector2 position = new Vector2(this.getX(), this.getY());
-        if (destination != null && !position.equals(destination)) {
+
+
+
+
+        Vector2 position = new Vector2(this.getX(), this.getY() );
+        if (isMoving) {
+            //See if we can get the center to move where we click
+            //We cant.
+            //destination.sub(this.getOriginX(), this.getOriginY());
             Vector2 velocity = destination.cpy().sub(position).nor().scl(movementSpeed);
             //If the distance between velocity and the destination is less than the distance between position and destination, set position = destination
             Vector2 newPosition = position.cpy().add(velocity);
@@ -100,5 +116,23 @@ public class Player extends Actor{
 
             }
         }
+    }
+
+
+    public Vector2 getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Vector2 destination) {
+        destination.sub(idleTexture.getRegionWidth()/2, idleTexture.getRegionHeight()/2);
+        this.destination = destination;
+    }
+
+    public boolean isMoving() {
+        return isMoving;
+    }
+
+    public void setMoving(boolean moving) {
+        isMoving = moving;
     }
 }

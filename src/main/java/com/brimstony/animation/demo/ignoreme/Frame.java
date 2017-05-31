@@ -1,4 +1,4 @@
-package com.brimstony.animation.demo.basic;
+package com.brimstony.animation.demo.ignoreme;
 
 import java.awt.image.BufferedImage;
 

@@ -2,43 +2,35 @@ package com.brimstony.animation.demo.gdx;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.brimstony.animation.demo.gdx.player.Player;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.brimstony.animation.demo.gdx.stage.DemoStage;
 
-public class GdxDemo extends ApplicationAdapter {
-
+public class GdxDemo extends Game {
 
 
     private DemoStage demoStage;
-
     float stateTime;
+
+    public GdxDemo() {
+
+
+    }
+
 
     @Override
     public void create() {
         Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
-        demoStage = new DemoStage(new ScreenViewport());
 
-        Group actorGroup = new Group();
-        Player player = new Player();
+        Viewport mainViewport = new ScreenViewport();
+        //mainViewport.setScreenBounds(0, 200, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-
-        actorGroup.addActor(player);
-        demoStage.addActor(actorGroup);
+        demoStage = new DemoStage(mainViewport);
         Gdx.input.setInputProcessor(demoStage);
-
-        configureControls();
-
     }
 
-    private void configureControls() {
-        //Gdx.input.setInputProcessor(new MouseController(this));
-    }
 
     @Override
     public void render() {
@@ -47,52 +39,10 @@ public class GdxDemo extends ApplicationAdapter {
         stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
         demoStage.act(stateTime);
         demoStage.draw();
-
-
-
-
-
-
-
-        // Get current frame of animation for the current stateTime
-/* Not sure if i need this....
-        spriteBatch.begin();
-
-        spriteBatch.draw(getCurrentFrame(), position.x, position.y);
-
-        spriteBatch.end();
-        */
     }
 
-    /*
-    private TextureRegion getCurrentFrame(){
-        if (currentXDirection == LEFT){
-            return walkLeftAnimation.getKeyFrame(stateTime, true);
-        } else if(currentXDirection == RIGHT){
-            return walkRightAnimation.getKeyFrame(stateTime, true);
-        } else if(currentXDirection == STOPPED){
-            return standing[lastXDirection];
-        }
-
-         return null;
-    }
-
-    public void setCurrentXDirection(int newDirection){
-        if(newDirection != STOPPED) {
-            lastXDirection = newDirection;
-        }
-        currentXDirection = newDirection;
-    }
-
-    public void setCurrentYDirection(int newDirection){
-        lastYDirection = currentYDirection;
-        currentYDirection = newDirection;
-    }
-    */
     @Override
     public void dispose() { // SpriteBatches and Textures must always be disposed
         demoStage.dispose();
-        //spriteBatch.dispose();
-        //spriteSheet.dispose();
     }
 }
